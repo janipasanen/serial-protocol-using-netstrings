@@ -1,0 +1,5 @@
+Sensor:	Arduino:
+VCC	5 V
+Trig	Digital input 4
+Echo	Digital input 2
+Gnd	GND

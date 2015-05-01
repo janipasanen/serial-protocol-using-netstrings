@@ -52,7 +52,8 @@ int outputPin=3; //TRIG pin
 /////////////////////////////
 // Netstrings
 char netstring;
-char netstringEncodeTransfer();
+String netstringEncodeIntTransfer();
+String netstringEncodeStringTransfer();
 
 /////////////////////////////
 //SETUP
@@ -96,9 +97,9 @@ void loop(){
          //makes sure we wait for a transition to LOW before any further output is made:
          lockLow = false;            
          //Serial.println("---");
-         Serial.print("motion detected at ");
-         Serial.print(millis()/1000);
-         Serial.println(" sec"); 
+         Serial.print(netstringEncodeStringTransfer("motion detected at "));
+         Serial.print(netstringEncodeIntTransfer((millis()/1000)));
+         Serial.print(netstringEncodeStringTransfer(" sec")); 
          delay(50);
          }         
          takeLowTime = true;
@@ -117,9 +118,9 @@ void loop(){
            //makes sure this block of code is only executed again after 
            //a new motion sequence has been detected
            lockLow = true;                        
-           Serial.print("motion ended at ");      //output
-           Serial.print((millis() - pause)/1000);
-           Serial.println(" sec");
+           Serial.print(netstringEncodeStringTransfer("motion ended at "));      //output
+           Serial.print(netstringEncodeIntTransfer((millis() - pause)/1000));
+           Serial.print(netstringEncodeStringTransfer(" sec"));
            delay(50);
            }
        }
@@ -132,7 +133,7 @@ void loop(){
      digitalWrite(outputPin, LOW); 
      int distance = pulseIn(inputPin, HIGH); //Read ultrasonic reflection
      distance= distance/58; //Calculate distance 
-     Serial.println(distance); //Print distance 
+     Serial.print(netstringEncodeIntTransfer(distance)); //Print distance 
      delay(100);        
        
        
@@ -142,11 +143,29 @@ void loop(){
   }
   
   
-  // Netstrings & serial communication
+  // Netstrings encoding & serial TX communication
   
-char netstringEncodeTransfer() {
- result = "A";      
- return result;
+  String netstringEncodeIntTransfer(int value) {
+    
+    String s = String(value); 
+    int len = s.length();
+    if (!len) return "ERROR:_EMPTY_STRING";
+    String netstring = len + String(":" + s +",");
+    
+    return netstring;
  
   }
+  
+  String netstringEncodeStringTransfer(String value) {
+    
+    int len = value.length();
+    if (!len) return "ERROR:_EMPTY_STRING";
+    String netstring = len + String(":" + value +",");
+    
+    return netstring;
+ 
+  }
+  
+  
+    // Netstrings decoding & serial FX communication
  

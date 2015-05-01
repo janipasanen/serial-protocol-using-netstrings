@@ -41,11 +41,11 @@ string decodeNetstring(string netstring) {
 }
 int main(int argc, const char * argv[]) {
 
-    string payload = "what will this do?";
+    string payload = "michael is the BEST EVER!!!";
     string netstring = encodeNetstring(payload);
     
     cout << encodeNetstring(payload) << endl;
-    cout << decodeNetstring(netstring) << endl; 
+    cout << decodeNetstring(netstring) << endl;
     
     return 0;
     

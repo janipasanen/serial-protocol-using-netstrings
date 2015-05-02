@@ -55,6 +55,10 @@ char netstring;
 String netstringEncodeIntTransfer();
 String netstringEncodeStringTransfer();
 
+// Serial.read
+String data = "";
+
+
 /////////////////////////////
 //SETUP
 
@@ -137,8 +141,20 @@ void loop(){
      delay(100);        
        
        
+     // Read from serial port if it is not locked by Serial.print
+     char incomingData;
+     if (Serial.available() > 0) {
+     // read the incoming byte:
+     incomingData = Serial.read();
+   
+     Serial.print("I received: ");
+     Serial.println(incomingData);
+
+     data = data + incomingData;
+
+     delay(100);   
        
-       
+     }
        
   }
   
